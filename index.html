@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lottery Spinner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/assets/style.css" />
+    <script type="text/javascript" src="/assets/script.js"></script>
+</head>
+<body>
+    <div id="actions">
+        <button onclick="toggleSpinner()">Toggle Spin</button>
+        <button onclick="logEntry()">Mark Entry</button>
+        <a href="/?limit1=6&max1=45">?limit1=6&max1=45</a>
+        <a href="/?limit1=5&max1=50&limit2=2&max2=12">?limit1=5&max1=50&limit2=2&max2=12</a>
+    </div>
+<div id="placeholder">&nbsp;</div>
+<table id="table">
+    <thead>
+        <tr><th>Entry</th><th>Tip</th></tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+</table>
+<button onclick="toggleTable()" id="table-toggle-button">Toggle</button>
+</body>
+</html>
