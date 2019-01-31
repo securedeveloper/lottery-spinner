@@ -1,7 +1,9 @@
 # lottery-spinner
---------------
 
 A simple lottery spinner script
+
+### Demo
+[https://securedeveloper.github.io/lottery-spinner/](https://securedeveloper.github.io/lottery-spinner/)
 
 * Step 01
 ```
@@ -32,7 +34,7 @@ and default values are
 var limit1 = 6, limit2 = 0, min1 = 1, max1 = 45, min2 = 1, max2 = 0;
 ```
 
-#ScreeShot
+# ScreeShot
 --------------
 
 ![ScreenShot](https://raw.githubusercontent.com/securedeveloper/lottery-spinner/master/assets/screenshot.png)
