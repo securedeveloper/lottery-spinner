@@ -291,14 +291,26 @@
                 document.getElementById('table').style.opacity = 0;
             }
         }
+
+        function try1stLottery() {
+            var host = window.location.href.split('?')[0];
+
+            window.location.href = `${host}?limit1=6&max1=45`;
+        }
+
+        function try2ndLottery() {
+            var host = window.location.href.split('?')[0];
+
+            window.location.href = `${host}?limit1=5&max1=50&limit2=2&max2=12`;
+        }
     </script>
 </head>
 <body>
 <div id="actions">
     <button onclick="toggleSpinner()">Toggle Spin</button>
     <button onclick="logEntry()">Mark Entry</button>
-    <a href="/?limit1=6&max1=45">?limit1=6&max1=45</a>
-    <a href="/?limit1=5&max1=50&limit2=2&max2=12">?limit1=5&max1=50&limit2=2&max2=12</a>
+    <a href="#" onclick="try1stLottery()">?limit1=6&max1=45</a>
+    <a href="#" onclick="try2ndLottery()">?limit1=5&max1=50&limit2=2&max2=12</a>
 </div>
 <div id="placeholder">&nbsp;</div>
 <table id="table">
