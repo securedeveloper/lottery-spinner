@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lottery Spinner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 50px;
+            background-color: rgba(54, 186, 223, 0.82);
+        }
+
+        body {
+            box-shadow: 0px 0px 120px rgba(41, 104, 215, 0.82);
+        }
+
+        #placeholder {
+            padding: 10px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            font-size: 15px;
+            box-shadow: 0px 0px 100px rgba(41, 104, 215, 0.92);
+        }
+
+        .tip1, .tip2 {
+            border-radius: 50%;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 5em;
+            color: #fff;
+            box-shadow: 0px 0px 10px rgba(250, 250, 250, 0.8);
+        }
+
+        .tip1 {
+            background-color: rgba(20, 20, 20, 0.8);
+        }
+
+        .tip2 {
+            background-color: rgba(143,155,30,0.82);
+            color: #EEEEE3;
+        }
+
+        table {
+            position: fixed;
+            bottom: 0;
+            left: 15%;
+            max-height: 400px;
+            background-color: white;
+            display: block;
+            overflow-y: auto;
+            margin: auto;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(20, 20, 20, 0.8);
+        }
+
+        td {
+            border-bottom: 1px dotted rgba(20, 20, 20, 0.8);
+            padding: 20px 100px;
+        }
+
+        #actions {
+            display: flex;
+            width: 100%;
+            align-content: space-around;
+            justify-content: space-between;
+            box-shadow: 0 0 15px rgba(41, 104, 215, 0.52);
+            transition: all ease 2s;
+            padding: 5px 10px;
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        #actions:hover {
+            box-shadow: 0 15px 15px rgba(41, 104, 215, 0.82);
+        }
+
+        button, a {
+            padding: 10px 20px;
+            background-color: rgb(50,70,150);
+            color: #FFF;
+            border:none;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 2px 0 5px rgba(20, 20, 20, 0.5);
+            transition: all ease 1s;
+        }
+
+        button:hover, a:hover {
+            box-shadow: 2px 0 8px rgba(20, 20, 20, 0.8);
+        }
+
+        table {
+            transition: all ease-in-out 1.5s;
+            opacity: 0;
+        }
+
+        #table-toggle-button {
+            position: fixed;
+            bottom: 0;
+            left: 10px;
+            bottom: 5px;
+        }
+
+    </style>
+    <script>
+        function generateRandomInteger(min, max) {
+            return Math.floor(min + Math.random() * (max + 1 - min));
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        var tip1Arr;
+        var tip2Arr;
+        var limit1 = 6, limit2 = 0, min1 = 1, max1 = 45, min2 = 1, max2 = 0;
+
+        function spin() {
+            if (getParameterByName('limit1')) {
+                limit1 = parseInt(getParameterByName('limit1'), 10);
+            }
+
+            if (getParameterByName('limit2')) {
+                limit2 = parseInt(getParameterByName('limit2'), 10);
+            }
+
+            if (getParameterByName('min1')) {
+                min1 = parseInt(getParameterByName('min1'), 10);
+            }
+
+            if (getParameterByName('max1')) {
+                max1 = parseInt(getParameterByName('max1'), 10);
+            }
+
+            if (getParameterByName('min2')) {
+                min2 = parseInt(getParameterByName('min2'), 10);
+            }
+
+            if (getParameterByName('max2')) {
+                max2 = parseInt(getParameterByName('max2'), 10);
+            }
+
+            tip1Arr = [];
+            tip2Arr = [];
+
+            for (let i = 0; i < limit1; i++) {
+                tip1Arr.push(getUniqueNum1(min1, max1));
+            }
+
+            for (let i = 0; i < limit2; i++) {
+                tip2Arr.push(getUniqueNum2(min2, max2));
+            }
+
+            tip1Arr.sort(sortNumber);
+            tip2Arr.sort(sortNumber);
+
+            let html = '';
+            tip1Arr.forEach(item => {
+                if(item < 10){
+                    html += '<span class="tip1">0' + item + '</span>';
+                }else {
+                    html += '<span class="tip1">' + item + '</span>';
+                }
+            });
+
+            tip2Arr.forEach(item => {
+                if(item < 10){
+                    html += '<span class="tip2">0' + item + '</span>';
+                }else {
+                    html += '<span class="tip2">' + item + '</span>';
+                }
+            });
+
+            document.getElementById('placeholder').innerHTML = html;
+        }
+
+        function sortNumber(a, b) {
+            return a - b;
+        }
+
+        function getUniqueNum1(min, max) {
+            let num = generateRandomInteger(min, max);
+
+            if (tip1Arr && tip1Arr.filter(item => item == num).length > 0) {
+                return getUniqueNum1(min, max);
+            }
+
+            return num;
+        }
+
+        function getUniqueNum2(min, max) {
+            let num = generateRandomInteger(min, max);
+
+            if (tip2Arr && tip2Arr.filter(item => item == num).length > 0) {
+                return getUniqueNum1(min, max);
+            }
+
+            return num;
+        }
+
+        var timer;
+        window.onload = function() {
+            startTimer();
+
+            loadEntries();
+        }
+
+        function startTimer() {
+            var timeOut = 2000;
+
+            if (getParameterByName('timeout')) {
+                timeOut = parseInt(getParameterByName('timeout'));
+            }
+
+            timer = setInterval(function() {
+                spin();
+            }, timeOut);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+
+            timer = null;
+        }
+
+        function toggleSpinner() {
+            if(timer) {
+                stopTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        function logEntry() {
+            var timeStamp = new Date().toJSON().slice(0, 10);
+
+            var joker = '';
+
+            if (getParameterByName('joker')) {
+                joker = getParameterByName('joker');
+            }
+
+            // stamp as
+            //date-limit1-limit2-min1-max1-min2-max2
+            var logItemKey = `${timeStamp}-${limit1}-${limit2}-${min1}-${max1}-${min2}-${max2}`;
+
+            if(tip1Arr.length > 0) {
+                localStorage.setItem(`${logItemKey}-tip1`, JSON.stringify(tip1Arr));
+            }
+
+            if(tip2Arr.length > 0) {
+                localStorage.setItem(`${logItemKey}-tip2`, JSON.stringify(tip2Arr));
+            }
+
+            if(joker) {
+                localStorage.setItem(`${logItemKey}-joker`, JSON.stringify(joker.split(",").map(item => parseInt(item))));
+            }
+
+            loadEntries();
+        }
+
+        function loadEntries() {
+            var tBody = document.getElementById('tbody');
+            tBody.innerHTML = '';
+
+            const items = {...localStorage};
+
+            for (var key in items) {
+                if (items.hasOwnProperty(key)) {
+                    tBody.innerHTML += `<tr><td>${key}</td><td>${items[key]}</td></tr>`;
+                }
+            }
+        }
+
+        var tableVisible = false;
+        function toggleTable() {
+            tableVisible = !tableVisible;
+
+            if(tableVisible) {
+                document.getElementById('table').style.opacity = 1;
+            } else {
+                document.getElementById('table').style.opacity = 0;
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="actions">
+    <button onclick="toggleSpinner()">Toggle Spin</button>
+    <button onclick="logEntry()">Mark Entry</button>
+    <a href="/?limit1=6&max1=45">?limit1=6&max1=45</a>
+    <a href="/?limit1=5&max1=50&limit2=2&max2=12">?limit1=5&max1=50&limit2=2&max2=12</a>
+</div>
+<div id="placeholder">&nbsp;</div>
+<table id="table">
+    <thead>
+    <tr><th>Entry</th><th>Tip</th></tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+</table>
+<button onclick="toggleTable()" id="table-toggle-button">Toggle</button>
+</body>
+</html>
